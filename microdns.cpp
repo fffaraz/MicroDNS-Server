@@ -28,7 +28,14 @@ const char *usage = "Usage: microdns {ip to give out} [{ip of microdns server}]"
 /* This is the header placed before the 4-byte IP; we change the last four
  * bytes to set the IP we give out in replies */
 #define P_LEN 16
-char packet[P_LEN] = { 0xc0,0x0c,0x00,0x01,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x04,0x7f,0x7f,0x7f,0x7f };
+char packet[P_LEN] = { 
+    0xc0,0x0c, // 1100 0000 0000 1100 -> offset pointer = 12
+    0x00,0x01, // Type  : A
+    0x00,0x01, // Class : IN
+    0x00,0x01,0x51,0x80, // TTL = 86400 -> 24h
+    0x00,0x04, // RD Length
+    0x00,0x00,0x00,0x00 // RDATA (IP)
+};
 
 // Function Prototypes
 void set_ip(char*);
